@@ -3,9 +3,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Observable;
 import java.util.TimerTask;
 
-public class Client {
+public class Client extends Observable{
 	private String user;
 	private Socket socket;
 	private PrintWriter out;

@@ -13,7 +13,7 @@ public class JQuickChatServer implements Runnable {
 	private static Vector<String> messageQueue = new Vector<String>();
 	private ServerSocket server;
 	private Vector<Client> clients = new Vector<Client>();
-	private final static int PORT = 5000;
+	private final static int PORT = 5001;
 	private Timer timer = new Timer();
 
 	public JQuickChatServer(String ip) throws UnknownHostException, IOException {
@@ -92,7 +92,10 @@ public class JQuickChatServer implements Runnable {
 	}
 	
 	public static void enqueueMessage(String msg) {
-		messageQueue.add(msg);
+        synchronized (messageQueue) {
+            messageQueue.add(msg);
+        }
+
 	}
 	
 	public boolean isClosed() {

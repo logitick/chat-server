@@ -2,7 +2,7 @@ import java.io.IOException;
 import java.util.TimerTask;
 
 
-public class Listener extends TimerTask {
+public class Listener implements Runnable {
 
 	private JQuickChatServer server;
 	

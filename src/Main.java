@@ -1,23 +1,27 @@
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Timer;
-
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
 
 	public static void main(String[] args) {
 		JQuickChatServer server = null;
-		Timer timer = new Timer(true);
-		
-		try {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(3);
+
+        try {
 			server = new JQuickChatServer(args[0]);
 			if (server.isReady()) {
+                executorService.schedule(server, 0, TimeUnit.MILLISECONDS);
 				System.out.println("Server created at " + server);
-				Disseminator d = new Disseminator(server);
-				timer.schedule(d, 0, 500);
+                Disseminator d = new Disseminator(server);
+                executorService.schedule(d, 500, TimeUnit.MILLISECONDS);
 				Listener l = new Listener(server);
-				timer.schedule(l,  0, 500);
+                executorService.schedule(l, 500, TimeUnit.MILLISECONDS);
 				server.run();
 			}
 
